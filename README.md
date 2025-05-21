@@ -1,6 +1,47 @@
 # magnetic-materials-2d
 
-Here is a quick tutorial on how to locally install the package.
+Predict the formation energy and magnetic moment of some 2D magentic materials.
+
+## Project Structure
+
+./src
+├── magnetic_materials_2d
+│   ├── **init**.py
+│   ├── **pycache**
+│   │   ├── **init**.cpython-313.pyc
+│   │   ├── functions.cpython-313.pyc
+│   │   ├── hyper_search.cpython-313.pyc
+│   │   └── utils.cpython-313.pyc
+│   ├── data
+│   │   ├── README.rtf
+│   │   ├── **pycache**
+│   │   │   └── dictionaries.cpython-313.pyc
+│   │   ├── dictionaries.py
+│   │   └── magneticmoment_Ef_data.csv
+│   ├── functions.py
+│   ├── hyper_search.py
+│   └── utils.py
+├── magnetic_materials_2d.egg-info
+│   ├── PKG-INFO
+│   ├── SOURCES.txt
+│   ├── dependency_links.txt
+│   ├── requires.txt
+│   └── top_level.txt
+└── notebooks
+├── ML_2D_exercises.ipynb
+└── ML_2D_working.ipynb
+
+- `/src/magnetic_materials_2d` contains all python modules.
+- `/src/magnetic_materials_2d/data` contains information about the descriptors.
+- `/src/notebooks` is where the running notebooks are; they will utilize the python modules and data
+
+## TODO
+
+1. Hyper-parameter tune for Extra-Trees Regression. Currently, hyper-paramter-tuning is only done for Random-Forest Regression. Modify `src/magnetic_materials_2d/hyper_search.py` and `src/notebooks/ML_2D_working.ipynb` to also hyper tune for Extra-Trees regression.
+2. Create tests in `test/` to test functions in `src/magnetic_materials_2d/hyper_search.py` and `src/magnetic_materials_2d/utils.py`.
+3. Fit formation energy and magnetic moment using other models at https://scikit-learn.org/stable/supervised_learning.html, https://scikit-learn.org/stable/api/sklearn.ensemble.html, or other machine learning models. Current models: `LinearRegression`, `RandomForestRegressor`, `ExtraTreesRegressor`.
+
+Please share ideas of other tasks that we can work on together.
 
 ## How to install `magnetic-materials-2d` locally
 
@@ -58,3 +99,5 @@ pip list
 ```
 
 Great! The package is now importable in any Python scripts located on your local machine. For more information, please refer to the Level 4 documentation at [https://billingegroup.github.io/scikit-package/](https://billingegroup.github.io/scikit-package/).
+
+Use pull-requests or issues to share any improvements to the documentation or codebase.
