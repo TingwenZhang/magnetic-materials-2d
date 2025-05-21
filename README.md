@@ -4,6 +4,7 @@ Predict the formation energy and magnetic moment of some 2D magentic materials.
 
 ## Project Structure
 
+```
 ./src
 ├── magnetic_materials_2d
 │   ├── **init**.py
@@ -30,6 +31,7 @@ Predict the formation energy and magnetic moment of some 2D magentic materials.
 └── notebooks
 ├── ML_2D_exercises.ipynb
 └── ML_2D_working.ipynb
+```
 
 - `/src/magnetic_materials_2d` contains all python modules.
 - `/src/magnetic_materials_2d/data` contains information about the descriptors.
@@ -39,7 +41,7 @@ Predict the formation energy and magnetic moment of some 2D magentic materials.
 
 1. Hyper-parameter tune for Extra-Trees Regression. Currently, hyper-paramter-tuning is only done for Random-Forest Regression. Modify `src/magnetic_materials_2d/hyper_search.py` and `src/notebooks/ML_2D_working.ipynb` to also hyper tune for Extra-Trees regression.
 2. Create tests in `test/` to test functions in `src/magnetic_materials_2d/hyper_search.py` and `src/magnetic_materials_2d/utils.py`.
-3. Fit formation energy and magnetic moment using other models at https://scikit-learn.org/stable/supervised_learning.html, https://scikit-learn.org/stable/api/sklearn.ensemble.html, or other machine learning models. Current models: `LinearRegression`, `RandomForestRegressor`, `ExtraTreesRegressor`.
+3. Fit formation energy and magnetic moment using other machine learning models at https://scikit-learn.org/stable/supervised_learning.html, https://scikit-learn.org/stable/api/sklearn.ensemble.html, or other libraries. Current models: `LinearRegression`, `RandomForestRegressor`, `ExtraTreesRegressor`.
 
 Please share ideas of other tasks that we can work on together.
 
@@ -100,4 +102,4 @@ pip list
 
 Great! The package is now importable in any Python scripts located on your local machine. For more information, please refer to the Level 4 documentation at [https://billingegroup.github.io/scikit-package/](https://billingegroup.github.io/scikit-package/).
 
-Use pull-requests or issues to share any improvements to the documentation or codebase.
+**Use pull-requests or issues to share any improvements to the documentation or codebase.**
