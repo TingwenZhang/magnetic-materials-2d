@@ -35,7 +35,7 @@ Predict the formation energy and magnetic moment of some 2D magentic materials.
 
 - `/src/magnetic_materials_2d` contains all python modules.
 - `/src/magnetic_materials_2d/data` contains information about the descriptors.
-- `/src/notebooks` is where the running notebooks are; they will utilize the python modules and data
+- `/src/notebooks` is where the running notebooks are; they will utilize the python modules and data.
 
 ## TODO
 
