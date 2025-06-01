@@ -426,53 +426,157 @@ def compare(
     plt.show()
 
 
+def parity_plot(
+    y_train: np.ndarray,
+    y_pred_train: np.ndarray,
+    y_test: np.ndarray,
+    y_pred_test: np.ndarray,
+    r2_train: float,
+    mae_train: float,
+    r2_test: float,
+    mae_test: float,
+    unit: str,
+    target: str,
+):
+    """
+    Plot both train and test predictions vs. actuals on one parity plot.
+
+    Parameters
+    ----------
+    y_train : np.ndarray
+        True target values for the training set.
+    y_pred_train : np.ndarray
+        Predicted target values for the training set.
+    y_test : np.ndarray
+        True target values for the test set.
+    y_pred_test : np.ndarray
+        Predicted target values for the test set.
+    r2_train : float
+        R² score on the training set.
+    mae_train : float
+        Mean absolute error on the training set.
+    r2_test : float
+        R² score on the test set.
+    mae_test : float
+        Mean absolute error on the test set.
+    unit : str
+        Unit of the target variable (for axis labels and legend).
+    target : str
+        Name of the target variable (for plot title).
+    """
+    fig, ax = plt.subplots(figsize=(6,6))
+
+    # major ticks
+    ax.tick_params(axis='both', which='major',
+                   labelsize=14, width=1.5, length=6)
+    # minor ticks
+    ax.minorticks_on()
+    ax.tick_params(axis='both', which='minor',
+                   labelsize=0, width=1, length=3)
+
+    # 45° reference
+    lo = min(y_train.min(), y_test.min())
+    hi = max(y_train.max(), y_test.max())
+    ax.plot([lo, hi], [lo, hi],
+            linestyle='--', linewidth=2, color='black', zorder=0)
+
+    # scatter
+    ax.scatter(
+        y_train, y_pred_train,
+        marker='o', c='green', alpha=0.7, s=75,
+        label=f"Train (R²={r2_train:.3f}, MAE={mae_train:.3f} {unit})",
+        zorder=2
+    )
+    ax.scatter(
+        y_test, y_pred_test,
+        marker='s', c='red', alpha=0.7, s=75,
+        label=f"Test  (R²={r2_test:.3f}, MAE={mae_test:.3f} {unit})",
+        zorder=2
+    )
+
+    # labels & title
+    ax.set_xlabel(f"Actual {unit}",    fontweight='bold', fontsize=14)
+    ax.set_ylabel(f"Predicted {unit}", fontweight='bold', fontsize=14)
+    ax.set_title(f"Parity Plot for {target}",
+                 fontweight='bold', fontsize=16)
+
+    # legend
+    leg = ax.legend(frameon=True, fontsize=12)
+    leg.get_frame().set_linewidth(1.5)
+    leg.get_frame().set_edgecolor("black")
+
+    # grid: major & minor
+    ax.grid(which='major', linestyle='-', linewidth=1,  alpha=0.6)
+    ax.grid(which='minor', linestyle=':', linewidth=0.5, alpha=0.4)
+
+    # equal aspect
+    ax.set_aspect('equal', 'box')
+
+    # thick border
+    for spine in ax.spines.values():
+        spine.set_linewidth(2)
+        spine.set_color('black')
+
+    plt.tight_layout()
+    plt.show()
+
+
 def test_performance(
     numeric_df: pd.DataFrame,
     descriptors: list[str],
     unit: str,
     target: str,
-    model: None,
+    model,
 ):
-    """Test the performance of a set of descriptors and a model.
+    """
+    Train `model` on `descriptors`, report R² & MAE, and plot parity.
 
     Parameters
     ----------
-    numeric_df: design matrix of numeric attributes
-    descriptors: list of the best descriptors
-    unit: unit of target
-    target: column label of target attribute
-    model: a model with fit() defined
-
-    Effects
-    -------
-    Show the predictions on training data and test data.
+    numeric_df : pd.DataFrame
+        DataFrame containing both feature columns and the target column.
+    descriptors : list[str]
+        List of column names in `numeric_df` to use as input features.
+    unit : str
+        Unit of the target variable (for printed metrics and axis labels).
+    target : str
+        Column name of the target variable in `numeric_df`.
+    model : estimator
+        An unfitted scikit-learn–style regressor with `.fit()` and `.predict()`.
     """
-    # fit all descriptors
-    X = numeric_df[descriptors]
-    X = np.asarray(X)
-    y = numeric_df[target]
-    y = np.asarray(y)
+    # 1) assemble data
+    X = numeric_df[descriptors].to_numpy()
+    y = numeric_df[target].to_numpy()
+
+    # 2) split
     X_train, X_test, y_train, y_test = train_test_split(
         X, y, test_size=TEST_SIZE, random_state=RANDOM_STATE
     )
-    regressor = model.fit(X_train, y_train)
-    prediction_on_training = regressor.predict(X_train)
-    prediction_on_test = regressor.predict(X_test)
 
-    print("Training: ", end="")
-    print_loss(y_train, prediction_on_training, unit)
+    # 3) fit & predict
+    reg = model.fit(X_train, y_train)
+    y_pred_train = reg.predict(X_train)
+    y_pred_test  = reg.predict(X_test)
 
-    print("Test: ", end="")
-    print_loss(y_test, prediction_on_test, unit)
+    # 4) compute metrics
+    from sklearn.metrics import r2_score, mean_absolute_error
+    r2_tr   = r2_score(y_train, y_pred_train)
+    mae_tr  = mean_absolute_error(y_train, y_pred_train)
+    r2_te   = r2_score(y_test,  y_pred_test)
+    mae_te  = mean_absolute_error(y_test,  y_pred_test)
 
-    score_train = f"$R^2 = {regressor.score(X_train, y_train):.3f}$"
-    score_test = f"$R^2 = {regressor.score(X_test, y_test):.3f}$"
-    compare(
-        prediction_on_training,
-        prediction_on_test,
-        y_train,
-        y_test,
-        score_train,
-        score_test,
+    # 5) print summary
+    print(f"Training   →  R² = {r2_tr:.3f},  MAE = {mae_tr:.3f} {unit}")
+    print(f"Test       →  R² = {r2_te:.3f},  MAE = {mae_te:.3f} {unit}")
+
+    # 6) combined parity plot
+    parity_plot(
+        y_train, y_pred_train,
+        y_test,  y_pred_test,
+        r2_tr, mae_tr,
+        r2_te, mae_te,
         unit,
+        target
     )
+
+
