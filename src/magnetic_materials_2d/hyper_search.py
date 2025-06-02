@@ -7,6 +7,17 @@ from sklearn.ensemble import RandomForestRegressor, ExtraTreesRegressor
 from sklearn.model_selection import train_test_split
 from typing import Type, Iterable, Dict, Tuple, Union
 
+"""A module for hyper-paramaters searches."""
+
+# import python modules
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
+
+# import all machine learning functions
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.model_selection import train_test_split
+
 # global variables
 TEST_SIZE = 0.2
 RANDOM_STATE = 42
@@ -214,4 +225,4 @@ def best_hyperparameters(
     # unwrap single-model case
     if len(model_classes) == 1:
         return next(iter(results.values()))
-    return results
+    return results 

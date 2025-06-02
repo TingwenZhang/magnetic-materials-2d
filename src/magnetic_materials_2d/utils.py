@@ -521,11 +521,14 @@ def parity_plot(
     plt.show()
 
 
+=======
+>>>>>>> upstream/main
 def test_performance(
     numeric_df: pd.DataFrame,
     descriptors: list[str],
     unit: str,
     target: str,
+<<<<<<< HEAD
     model,
 ):
     """
