@@ -4,6 +4,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
+from typing import List, Tuple, Dict
 
 from sklearn.model_selection import train_test_split
 
@@ -16,9 +17,8 @@ def sorted_descriptors(
     numeric_df: pd.DataFrame,
     target: str,
     model: None,
-) -> list[tuple[float, str]]:
-    """Sort all descriptors in decreasing score order, for a given model and
-    target.
+) -> List[Tuple[float, str]]:
+    """Sort all descriptors in decreasing score on test data, for a given model and target.
 
     Parameters
     ----------
@@ -26,9 +26,9 @@ def sorted_descriptors(
     target: column label of the target attribute
     model: a model with fit() defined
 
-    Effect
-    ------
-    Return a list of sorted descriptors as (score, column label)
+    Returns
+    -------
+    a list of sorted descriptors as (score, column label)
     """
     descriptors = []
 
@@ -54,16 +54,26 @@ def sorted_descriptors(
 
 
 def top12(
-    descriptors: np.ndarray,
-    column_meaning_map: dict[str, str],
+    descriptors: List[Tuple[float, str]],
+    column_meaning_map: Dict[str, str],
     target: str,
     method: str,
 ):
-    """Print the 12 highest scored descriptors for a given target and
-    method."""
-    title = (
-        f"12 highest scored descriptors for {target} using {method} regression"
-    )
+    """Print the 12 highest scored descriptors for a given target and method. 
+
+    Parameters
+    ----------
+    descriptors: a list of sorted descriptors (should come from sorted_descriptors)
+    column_meaning_map: a dictionary mapping column labels to their description
+    target: column label of the target attribute
+    method: name of the regression model
+
+    Returns
+    -------
+    None   
+    """
+
+    title = f"12 highest scored descriptors for {target} using {method} regression"
     print(title)
     print("-" * len(title))
     for i in range(12):
@@ -72,19 +82,17 @@ def top12(
         print(f"{i+1:2.0f}. {column_meaning_map[label]} (score = {score:.3f})")
 
 
-def top_descriptors(
-    descriptors: list[tuple[float, str]], threshold: float
-) -> list[str]:
+def top_descriptors(descriptors: List[Tuple[float, str]], threshold: float) -> List[str]:
     """Select descriptors above the given threshold.
 
     Parameters
     ----------
-    descriptors: a sorted list of descriptors
-    threshold: threshold score
+    descriptors: a sorted list of descriptors (should come from sorted_descriptors)
+    threshold: threshold score, below which the descriptor will be excluded from the model
 
-    Effects
+    Returns
     -------
-    Return all descriptors above the threshold score
+    all descriptors above the threshold score
     """
     output = []
     for descriptor in descriptors:
@@ -99,23 +107,22 @@ def top_descriptors(
 
 def best_descriptors(
     numeric_df: pd.DataFrame,
-    all_descriptors: list[tuple[float, str]],
+    all_descriptors: List[Tuple[float, str]],
     model: None,
     target: str,
-) -> list[str]:
-    """Select the best set descriptors for a given method, by searching through
-    a range of threshold scores.
+) -> List[str]:
+    """Select the best set descriptors for a given method, by searching through threshold scores.
 
     Parameters
     ----------
     numeric_df: design matrix of numeric descriptors
-    all_descriptors: a list of sorted descriptors
+    all_descriptors: a list of sorted descriptors (should come from sorted_descriptors)
     model: a model with fit() defined
     target: column label of the target attribute
 
-    Effects
+    Returns
     -------
-    Return the list of best descriptors for the model and target
+    the list of descriptors corresponding to the highest score, for the given model and target
     """
     y = numeric_df[target]
     y = np.asarray(y)
@@ -130,7 +137,8 @@ def best_descriptors(
         descriptors = top_descriptors(all_descriptors, threshold)
         X = numeric_df[descriptors]
         X = np.asarray(X)
-        if X.shape[1] == 0:  # no descriptors are above this threshold
+        if X.shape[1] == 0:
+            # no descriptors are above this threshold
             scores.append(0.0)
             continue
 
@@ -141,6 +149,7 @@ def best_descriptors(
         score = regressor.score(X_test, y_test)
         scores.append(score)
         if score > max_score:
+            # we found a set of descriptors resulting in a higher score
             max_score = score
             solution = descriptors
             optimum_threshold = threshold
@@ -159,23 +168,23 @@ def best_descriptors(
 
 
 def print_best_descriptors(
-    descriptors: list[str],
-    column_meaning_map: dict[str, str],
+    descriptors: List[str],
+    column_meaning_map: Dict[str, str],
     target: str,
     method: str,
 ):
-    """Print the best descriptors of a prediction model and target.
+    """Print the highest-scored descriptors of a prediction model and target.
 
     Parameters
     ----------
-    descriptors: best descriptors
+    descriptors: highest scored descriptors
     column_meaning_map: a dictionary mapping column labels to their description
     target: column label of target attribute
-    method: name of method
+    method: name of the regression model
 
-    Effects
+    Returns
     -------
-    Format the top descriptors nicely.
+    None
     """
     title = f"Best descriptors for {column_meaning_map[target]} using {method}"
 
@@ -186,10 +195,8 @@ def print_best_descriptors(
     print("total:", len(descriptors))
 
 
-def important_descriptors(
-    numeric_df: pd.DataFrame, target: str, model: None
-) -> list[tuple[float, str]]:
-    """Show the important descriptors selected by the extra trees regressor.
+def important_descriptors(numeric_df: pd.DataFrame, target: str, model: None) -> List[Tuple[float, str]]:
+    """Show the important descriptors selected by a tree-based regressor.
 
     Parameters
     ----------
@@ -197,9 +204,9 @@ def important_descriptors(
     model: a model with feature_importances_
     target: column label of the target attribute
 
-    Effects
+    Returns
     -------
-    Return a sorted list of important descriptors for given method and target
+    a sorted list of important descriptors for the given method and target
     """
     X = numeric_df.drop(columns=[target])
     descriptors = X.columns
@@ -231,23 +238,22 @@ def important_descriptors(
 
 def optimum_importance(
     numeric_df: pd.DataFrame,
-    all_descriptors: list[tuple[float, str]],
+    all_descriptors: List[Tuple[float, str]],
     model: None,
     target: str,
-) -> list[str]:
-    """Select the best descriptors for extra trees regressor, by searching
-    through a range of importances.
+) -> List[str]:
+    """Select the best descriptors for extra trees regressor, by searching through importances.
 
     Parameters
     ----------
     numeric_df: design matrix of numeric descriptors
-    all_descriptors: a list of sorted descriptors
+    all_descriptors: a list of sorted descriptors (should come from important_descriptors)
     model: a model with fit() defined
     target: column label of the target attribute
 
-    Effects
+    Returns
     -------
-    Return the list of most important descriptors for the target.
+    the list of descriptors corresponding to the highest score, for the given model and target
     """
     y = numeric_df[target]
     y = np.asarray(y)
@@ -262,7 +268,8 @@ def optimum_importance(
         descriptors = top_descriptors(all_descriptors, importance)
         X = numeric_df[descriptors]
         X = np.asarray(X)
-        if X.shape[1] == 0:  # no descriptors are above this importance
+        if X.shape[1] == 0:
+            # no descriptors are above this importance
             scores.append(0.0)
             continue
 
@@ -273,6 +280,7 @@ def optimum_importance(
         score = regressor.score(X_test, y_test)
         scores.append(score)
         if score > max_score:
+            # we found a set of descriptors resulting in a higher score
             max_score = score
             solution = descriptors
             optimum_importance = importance
@@ -289,6 +297,33 @@ def optimum_importance(
     print()
     return solution
 
+def print_important_descriptors(
+    descriptors: List[str],
+    column_meaning_map: Dict[str, str],
+    target: str,
+    method: str,
+):
+    """Print the most important descriptors of a prediction model and target.
+
+    Parameters
+    ----------
+    descriptors: most important descriptors
+    column_meaning_map: a dictionary mapping column labels to their description
+    target: column label of target attribute
+    method: name of the regression model
+
+    Returns
+    -------
+    None
+    """
+    title = f"Important descriptors for {column_meaning_map[target]} using {method}"
+
+    print(title)
+    print("-" * len(title))
+    for descriptor in descriptors:
+        print(f"{column_meaning_map[descriptor]} ({descriptor})")
+    print("total:", len(descriptors))
+    
 
 def print_loss(actual_y: np.ndarray, predicted_y: np.ndarray, unit: str):
     """Print root mean square error.
@@ -299,9 +334,9 @@ def print_loss(actual_y: np.ndarray, predicted_y: np.ndarray, unit: str):
     predicted_y: predicted target values
     unit: unit of target
 
-    Effects
+    Returns
     -------
-    Print root mean square error.
+    None
     """
 
     mse = np.mean((actual_y - predicted_y) ** 2)
@@ -313,7 +348,7 @@ def print_loss(actual_y: np.ndarray, predicted_y: np.ndarray, unit: str):
 def single_descriptor_regression(
     numeric_df: pd.DataFrame,
     descriptor: str,
-    column_meaning_map: dict[str:str],
+    column_meaning_map: Dict[str, str],
     unit: str,
     target: str,
     model: None,
@@ -328,6 +363,10 @@ def single_descriptor_regression(
     unit: unit of target
     target: column label of target attribute
     model: a model with fit() defined
+
+    Returns
+    -------
+    None
     """
     X = numeric_df[[descriptor]]
     X = np.asarray(X)
@@ -340,8 +379,6 @@ def single_descriptor_regression(
 
     print_loss(y, predicted_y, unit)
 
-    # Plot your model alongside the X and y data.
-    # type code here...
     plt.scatter(X, y, c="tab:red")
     plt.plot(X, predicted_y, c="tab:blue")
     plt.xlabel(column_meaning_map[descriptor])
@@ -366,8 +403,7 @@ def compare(
     score_test: str,
     unit: str,
 ) -> None:
-    """A helper function to visualize predication and actual values of the
-    target attribute. A 45-degree line is plotted to show perfect prediction.
+    """A helper function to visualize predication and actual values of the target attribute. A 45-degree line is plotted to show perfect prediction.
 
     Parameters
     ----------
@@ -375,11 +411,14 @@ def compare(
     prediction_on_test: 1D NumPy array of predictions on the target attribute
     y_train: 1D NumPy array of actual values of the target attribute for the
     training set
-    y_test: 1D NumPy array of actual values of the target attribute for the
-    test set
+    y_test: 1D NumPy array of actual values of the target attribute for the test set
     score_train: score on the training data formatted as a string
     score_test: score on the test data formatted as a string
     unit: unit of target
+
+    Returns
+    -------
+    None
     """
     plt.figure(figsize=(6, 12))
     plt.subplot(2, 1, 1)
@@ -442,26 +481,20 @@ def parity_plot(
 
     Parameters
     ----------
-    y_train : np.ndarray
-        True target values for the training set.
-    y_pred_train : np.ndarray
-        Predicted target values for the training set.
-    y_test : np.ndarray
-        True target values for the test set.
-    y_pred_test : np.ndarray
-        Predicted target values for the test set.
-    r2_train : float
-        R² score on the training set.
-    mae_train : float
-        Mean absolute error on the training set.
-    r2_test : float
-        R² score on the test set.
-    mae_test : float
-        Mean absolute error on the test set.
-    unit : str
-        Unit of the target variable (for axis labels and legend).
-    target : str
-        Name of the target variable (for plot title).
+    y_train: true target values for the training set
+    y_pred_train: predicted target values for the training set
+    y_test: true target values for the test set
+    y_pred_test: predicted target values for the test set
+    r2_train: R^2 on the training set
+    mae_train: mean absolute error on the training set.=
+    r2_test: R^2 on the test set
+    mae_test: mean absolute error on the test set
+    unit: unit of the target variable (for axis labels and legend)
+    target: name of the target variable (for plot title)
+
+    Returns
+    -------
+    None
     """
     fig, ax = plt.subplots(figsize=(6, 6))
 
@@ -473,7 +506,7 @@ def parity_plot(
     ax.minorticks_on()
     ax.tick_params(axis="both", which="minor", labelsize=0, width=1, length=3)
 
-    # 45° reference
+    # 45-degree reference
     lo = min(y_train.min(), y_test.min())
     hi = max(y_train.max(), y_test.max())
     ax.plot(
@@ -493,7 +526,7 @@ def parity_plot(
         c="green",
         alpha=0.7,
         s=75,
-        label=f"Train (R²={r2_train:.3f}, MAE={mae_train:.3f} {unit})",
+        label=f"Train (R^2={r2_train:.3f}, MAE={mae_train:.3f} {unit})",
         zorder=2,
     )
     ax.scatter(
@@ -503,7 +536,7 @@ def parity_plot(
         c="red",
         alpha=0.7,
         s=75,
-        label=f"Test  (R²={r2_test:.3f}, MAE={mae_test:.3f} {unit})",
+        label=f"Test  (R^2={r2_test:.3f}, MAE={mae_test:.3f} {unit})",
         zorder=2,
     )
 
@@ -535,7 +568,7 @@ def parity_plot(
 
 def test_performance(
     numeric_df: pd.DataFrame,
-    descriptors: list[str],
+    descriptors: List[str],
     unit: str,
     target: str,
     model,
@@ -544,16 +577,14 @@ def test_performance(
 
     Parameters
     ----------
-    numeric_df : pd.DataFrame
-        DataFrame containing both feature columns and the target column.
-    descriptors : list[str]
-        List of column names in `numeric_df` to use as input features.
-    unit : str
-        Unit of the target variable (for printed metrics and axis labels).
-    target : str
-        Column name of the target variable in `numeric_df`.
-    model : estimator
-        An unfitted scikit-learn–style regressor with `.fit()` and `.predict()`.
+    numeric_df: design matrix of numeric descriptors
+    descriptors: column labels of a set of descriptors
+    unit: unit of the target variable (for axis labels and legend)
+    target: column label of the target attribute
+    model: a model with fit() defined
+
+    Returns
+    -------
     """
     # 1) assemble data
     X = numeric_df[descriptors].to_numpy()
@@ -578,8 +609,8 @@ def test_performance(
     mae_te = mean_absolute_error(y_test, y_pred_test)
 
     # 5) print summary
-    print(f"Training   →  R^2 = {r2_tr:.3f},  MAE = {mae_tr:.3f} {unit}")
-    print(f"Test       →  R^2 = {r2_te:.3f},  MAE = {mae_te:.3f} {unit}")
+    print(f"Training: R^2 = {r2_tr:.3f},  MAE = {mae_tr:.3f} {unit}")
+    print(f"Test: R^2 = {r2_te:.3f},  MAE = {mae_te:.3f} {unit}")
 
     # 6) combined parity plot
     parity_plot(

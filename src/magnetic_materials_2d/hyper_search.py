@@ -25,23 +25,13 @@ def hyper_search_2d(
 
     Parameters
     ----------
-    X_train : np.ndarray
-        Training feature matrix of shape (n_samples_train, n_features).
-    y_train : np.ndarray
-        Training target array of shape (n_samples_train,).
-    X_val : np.ndarray
-        Validation feature matrix of shape (n_samples_val, n_features).
-    y_val : np.ndarray
-        Validation target array of shape (n_samples_val,).
-    param_grid : Dict[str, Iterable]
-        Dictionary with exactly two keys.
-        Each key is a hyperparameter name, and its value is an iterable
-        of possible settings to try.
-    model_cls : Type
-        A scikit-learn–style estimator class (e.g. `RandomForestRegressor`).
-        Will be instantiated via `model_cls(**cfg)`.
-    fixed_params : Dict, optional
-        Any parameters to pass *unchanged* to every model instantiation.
+    X_train: Training feature matrix of shape (n_samples_train, n_features).
+    y_train: Training target array of shape (n_samples_train,).
+    X_val: Validation feature matrix of shape (n_samples_val, n_features).
+    y_val:Validation target array of shape (n_samples_val,).
+    param_grid: Dictionary with exactly two keys. Each key is a hyperparameter name, and its value is an iterable of possible settings to try.
+    model_cls: A scikit-learn–style estimator class (e.g. `RandomForestRegressor`). Will be instantiated via `model_cls(**cfg)`.
+    fixed_params: Any parameters to pass *unchanged* to every model instantiation.
 
     Returns
     -------
