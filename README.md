@@ -37,14 +37,6 @@ Predict the formation energy and magnetic moment of some 2D magentic materials.
 - `/src/magnetic_materials_2d/data` contains information about the descriptors.
 - `/src/notebooks` is where the running notebooks are; they will utilize the python modules and data.
 
-## TODO
-
-1. Hyper-parameter tune for Extra-Trees Regression. Currently, hyper-paramter-tuning is only done for Random-Forest Regression. Modify `src/magnetic_materials_2d/hyper_search.py` and `src/notebooks/ML_2D_working.ipynb` to also hyper tune for Extra-Trees regression.
-2. Create tests in `test/` to test functions in `src/magnetic_materials_2d/hyper_search.py` and `src/magnetic_materials_2d/utils.py`.
-3. Fit formation energy and magnetic moment using other machine learning models at https://scikit-learn.org/stable/supervised_learning.html, https://scikit-learn.org/stable/api/sklearn.ensemble.html, or other libraries. Current models: `LinearRegression`, `RandomForestRegressor`, `ExtraTreesRegressor`.
-
-Please share ideas of other tasks that we can work on together.
-
 ## How to install `magnetic-materials-2d` locally
 
 `cd` into the project directory:
