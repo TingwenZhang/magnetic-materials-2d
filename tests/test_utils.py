@@ -1,10 +1,12 @@
 # tests/test_utils.py
 
+import pytest
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.linear_model import LinearRegression
 from sklearn.ensemble import ExtraTreesRegressor
+from sklearn.datasets import make_regression
 from magnetic_materials_2d.utils import (
     sorted_descriptors,
     top12,
@@ -17,7 +19,238 @@ from magnetic_materials_2d.utils import (
     single_descriptor_regression,
     compare,
     parity_plot,
+    test_performance,
+    TEST_SIZE,
+    RANDOM_STATE
 )
+
+# Fixtures
+@pytest.fixture
+def synthetic_data():
+    """Create synthetic regression data for testing."""
+    X, y = make_regression(n_samples=100, n_features=5, noise=0.1, random_state=RANDOM_STATE)
+    df = pd.DataFrame(X, columns=[f"feature_{i}" for i in range(X.shape[1])])
+    df['target'] = y
+    return df
+
+@pytest.fixture
+def column_meaning_map():
+    """Create a simple column meaning map."""
+    return {
+        'feature_0': 'Feature 0 Description',
+        'feature_1': 'Feature 1 Description',
+        'feature_2': 'Feature 2 Description',
+        'feature_3': 'Feature 3 Description',
+        'feature_4': 'Feature 4 Description',
+        'target': 'Target Description'
+    }
+
+@pytest.fixture
+def sorted_descriptors_list(synthetic_data):
+    """Create sorted descriptors for testing."""
+    model = LinearRegression()
+    return sorted_descriptors(synthetic_data, 'target', model)
+
+def test_sorted_descriptors(synthetic_data, sorted_descriptors_list):
+    """Test sorted_descriptors returns correct format and ordering."""
+    # Check return type
+    assert isinstance(sorted_descriptors_list, list)
+    
+    # Check element types
+    for item in sorted_descriptors_list:
+        assert isinstance(item, tuple)
+        assert len(item) == 2
+        assert isinstance(item[0], float)
+        assert isinstance(item[1], str)
+    
+    # Check ordering (descending)
+    scores = [item[0] for item in sorted_descriptors_list]
+    assert scores == sorted(scores, reverse=True)
+    
+    # Check all features are included
+    feature_columns = [col for col in synthetic_data.columns if col != 'target']
+    returned_features = [item[1] for item in sorted_descriptors_list]
+    assert set(feature_columns) == set(returned_features)
+
+def test_top12(capsys, sorted_descriptors_list, column_meaning_map):
+    """Test top12 prints correct output."""
+    top12(sorted_descriptors_list, column_meaning_map, 'target', 'Linear Regression')
+    captured = capsys.readouterr()
+    
+    # Check title
+    assert "12 highest scored descriptors for target using Linear Regression" in captured.out
+    
+    # Check 12 items are printed
+    lines = [line for line in captured.out.split('\n') if line.strip()]
+    assert len(lines) >= 13  # Title + 12 items + separator
+    
+    # Check item format
+    for i in range(1, 13):
+        assert f"{i}." in captured.out
+
+def test_top_descriptors(sorted_descriptors_list):
+    """Test top_descriptors returns correct descriptors."""
+    # Test threshold above max score
+    result = top_descriptors(sorted_descriptors_list, 1.5)
+    assert len(result) == 0
+    
+    # Test threshold below min score
+    min_score = min(item[0] for item in sorted_descriptors_list)
+    result = top_descriptors(sorted_descriptors_list, min_score - 0.1)
+    assert len(result) == len(sorted_descriptors_list)
+    
+    # Test valid threshold
+    threshold = sorted_descriptors_list[2][0] - 0.01
+    result = top_descriptors(sorted_descriptors_list, threshold)
+    assert len(result) >= 3
+    for item in result:
+        assert item in [d[1] for d in sorted_descriptors_list]
+
+def test_best_descriptors(synthetic_data, sorted_descriptors_list):
+    """Test best_descriptors returns valid descriptors."""
+    model = LinearRegression()
+    result = best_descriptors(synthetic_data, sorted_descriptors_list, model, 'target')
+    
+    # Check return type and content
+    assert isinstance(result, list)
+    assert len(result) > 0
+    assert all(isinstance(item, str) for item in result)
+    
+    # Check all descriptors are valid columns
+    valid_columns = set(synthetic_data.columns) - {'target'}
+    assert all(col in valid_columns for col in result)
+
+def test_print_best_descriptors(capsys, column_meaning_map, sorted_descriptors_list):
+    """Test print_best_descriptors prints correct output."""
+    descriptors = [item[1] for item in sorted_descriptors_list[:3]]
+    print_best_descriptors(descriptors, column_meaning_map, 'target', 'Linear Regression')
+    captured = capsys.readouterr()
+    
+    # Check title
+    assert "Best descriptors for Target Description using Linear Regression" in captured.out
+    
+    # Check descriptors are printed
+    for desc in descriptors:
+        assert column_meaning_map[desc] in captured.out
+
+def test_important_descriptors(synthetic_data):
+    """Test important_descriptors returns correct format."""
+    model = ExtraTreesRegressor(random_state=RANDOM_STATE)
+    result = important_descriptors(synthetic_data, 'target', model)
+    
+    # Check return type
+    assert isinstance(result, list)
+    
+    # Check element types
+    for item in result:
+        assert isinstance(item, tuple)
+        assert len(item) == 2
+        assert isinstance(item[0], float)
+        assert isinstance(item[1], str)
+    
+    # Check ordering (descending)
+    importances = [item[0] for item in result]
+    assert importances == sorted(importances, reverse=True)
+
+def test_optimum_importance(synthetic_data):
+    """Test optimum_importance returns valid descriptors."""
+    model = ExtraTreesRegressor(random_state=RANDOM_STATE)
+    all_descriptors = important_descriptors(synthetic_data, 'target', model)
+    result = optimum_importance(synthetic_data, all_descriptors, model, 'target')
+    
+    # Check return type and content
+    assert isinstance(result, list)
+    assert len(result) > 0
+    assert all(isinstance(item, str) for item in result)
+    
+    # Check all descriptors are valid columns
+    valid_columns = set(synthetic_data.columns) - {'target'}
+    assert all(col in valid_columns for col in result)
+
+def test_print_loss(capsys):
+    """Test print_loss prints correct RMSE."""
+    actual_y = np.array([1, 2, 3, 4, 5])
+    predicted_y = np.array([1.1, 1.9, 3.1, 3.9, 5.1])
+    print_loss(actual_y, predicted_y, "eV")
+    captured = capsys.readouterr()
+    
+    # Calculate expected RMSE
+    expected_rmse = np.sqrt(np.mean((actual_y - predicted_y) ** 2))
+    assert f"root mean square error = {expected_rmse:.3f} eV" in captured.out
+
+def test_single_descriptor_regression(synthetic_data, column_meaning_map):
+    """Test single_descriptor_regression runs without errors."""
+    # Mock plt.show to prevent displaying plots
+    plt.show = lambda: None
+    
+    model = LinearRegression()
+    single_descriptor_regression(
+        synthetic_data,
+        'feature_0',
+        column_meaning_map,
+        'units',
+        'target',
+        model
+    )
+
+def test_compare():
+    """Test compare runs without errors."""
+    # Mock plt.show to prevent displaying plots
+    plt.show = lambda: None
+    
+    y_train = np.array([1, 2, 3])
+    y_test = np.array([4, 5])
+    prediction_on_training = np.array([1.1, 1.9, 3.1])
+    prediction_on_test = np.array([4.1, 4.9])
+    
+    compare(
+        prediction_on_training,
+        prediction_on_test,
+        y_train,
+        y_test,
+        "R2=0.95",
+        "R2=0.90",
+        "eV"
+    )
+
+def test_parity_plot():
+    """Test parity_plot runs without errors."""
+    # Mock plt.show to prevent displaying plots
+    plt.show = lambda: None
+    
+    y_train = np.array([1, 2, 3])
+    y_pred_train = np.array([1.1, 1.9, 3.1])
+    y_test = np.array([4, 5])
+    y_pred_test = np.array([4.1, 4.9])
+    
+    parity_plot(
+        y_train,
+        y_pred_train,
+        y_test,
+        y_pred_test,
+        0.95,
+        0.1,
+        0.90,
+        0.15,
+        "eV",
+        "Target"
+    )
+
+def test_test_performance(synthetic_data):
+    """Test test_performance runs without errors."""
+    # Mock plt.show to prevent displaying plots
+    plt.show = lambda: None
+    
+    descriptors = ['feature_0', 'feature_1', 'feature_2']
+    model = LinearRegression()
+    
+    test_performance(
+        synthetic_data,
+        descriptors,
+        "units",
+        "target",
+        model
+    )
 
 
 def make_multi_feature_df():

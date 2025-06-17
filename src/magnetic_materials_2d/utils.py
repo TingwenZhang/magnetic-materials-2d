@@ -571,9 +571,9 @@ def test_performance(
     descriptors: List[str],
     unit: str,
     target: str,
-    model,
+    model: None,
 ):
-    """Train `model` on `descriptors`, report R² & MAE, and plot parity.
+    """Train `model` on `descriptors`, report R^2, MAE, and plot parity.
 
     Parameters
     ----------
