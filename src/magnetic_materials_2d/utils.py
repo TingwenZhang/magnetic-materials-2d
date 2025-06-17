@@ -18,7 +18,8 @@ def sorted_descriptors(
     target: str,
     model: None,
 ) -> List[Tuple[float, str]]:
-    """Sort all descriptors in decreasing score on test data, for a given model and target.
+    """Sort all descriptors in decreasing score on test data, for a given model
+    and target.
 
     Parameters
     ----------
@@ -59,7 +60,7 @@ def top12(
     target: str,
     method: str,
 ):
-    """Print the 12 highest scored descriptors for a given target and method. 
+    """Print the 12 highest scored descriptors for a given target and method.
 
     Parameters
     ----------
@@ -70,10 +71,12 @@ def top12(
 
     Returns
     -------
-    None   
+    None
     """
 
-    title = f"12 highest scored descriptors for {target} using {method} regression"
+    title = (
+        f"12 highest scored descriptors for {target} using {method} regression"
+    )
     print(title)
     print("-" * len(title))
     for i in range(12):
@@ -82,7 +85,9 @@ def top12(
         print(f"{i+1:2.0f}. {column_meaning_map[label]} (score = {score:.3f})")
 
 
-def top_descriptors(descriptors: List[Tuple[float, str]], threshold: float) -> List[str]:
+def top_descriptors(
+    descriptors: List[Tuple[float, str]], threshold: float
+) -> List[str]:
     """Select descriptors above the given threshold.
 
     Parameters
@@ -111,7 +116,8 @@ def best_descriptors(
     model: None,
     target: str,
 ) -> List[str]:
-    """Select the best set descriptors for a given method, by searching through threshold scores.
+    """Select the best set descriptors for a given method, by searching through
+    threshold scores.
 
     Parameters
     ----------
@@ -195,7 +201,9 @@ def print_best_descriptors(
     print("total:", len(descriptors))
 
 
-def important_descriptors(numeric_df: pd.DataFrame, target: str, model: None) -> List[Tuple[float, str]]:
+def important_descriptors(
+    numeric_df: pd.DataFrame, target: str, model: None
+) -> List[Tuple[float, str]]:
     """Show the important descriptors selected by a tree-based regressor.
 
     Parameters
@@ -242,7 +250,8 @@ def optimum_importance(
     model: None,
     target: str,
 ) -> List[str]:
-    """Select the best descriptors for extra trees regressor, by searching through importances.
+    """Select the best descriptors for extra trees regressor, by searching
+    through importances.
 
     Parameters
     ----------
@@ -297,6 +306,7 @@ def optimum_importance(
     print()
     return solution
 
+
 def print_important_descriptors(
     descriptors: List[str],
     column_meaning_map: Dict[str, str],
@@ -323,7 +333,7 @@ def print_important_descriptors(
     for descriptor in descriptors:
         print(f"{column_meaning_map[descriptor]} ({descriptor})")
     print("total:", len(descriptors))
-    
+
 
 def print_loss(actual_y: np.ndarray, predicted_y: np.ndarray, unit: str):
     """Print root mean square error.
@@ -403,7 +413,8 @@ def compare(
     score_test: str,
     unit: str,
 ) -> None:
-    """A helper function to visualize predication and actual values of the target attribute. A 45-degree line is plotted to show perfect prediction.
+    """A helper function to visualize predication and actual values of the
+    target attribute. A 45-degree line is plotted to show perfect prediction.
 
     Parameters
     ----------

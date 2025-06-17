@@ -5,20 +5,22 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from sklearn.ensemble import RandomForestRegressor, ExtraTreesRegressor
 from sklearn.model_selection import train_test_split
-from typing import List, Tuple, Dict
+from typing import Tuple
 
 # global variables
 TEST_SIZE = 0.2
 RANDOM_STATE = 42
 
 
-def hyper_search_2d(X_train: np.ndarray,
-                    y_train: np.ndarray,
-                    X_test: np.ndarray,
-                    y_test: np.ndarray,
-                    max_depth_bound: int,
-                    n_estimators_bound: int,
-                    model_name: str) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+def hyper_search_2d(
+    X_train: np.ndarray,
+    y_train: np.ndarray,
+    X_test: np.ndarray,
+    y_test: np.ndarray,
+    max_depth_bound: int,
+    n_estimators_bound: int,
+    model_name: str,
+) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
     """Brute-force search through max_depth and n_estimators.
 
     Parameters
@@ -41,7 +43,9 @@ def hyper_search_2d(X_train: np.ndarray,
     max_depth_values = np.arange(max_depth_bound) + 1
     n_estimators_values = np.arange(1, n_estimators_bound, 25)
     print("Evaluate the following values for max_depth: ", max_depth_values)
-    print("Evaluate the following values for n_estimators: ", n_estimators_values)
+    print(
+        "Evaluate the following values for n_estimators: ", n_estimators_values
+    )
 
     m = len(max_depth_values)
     n = len(n_estimators_values)
@@ -63,7 +67,7 @@ def hyper_search_2d(X_train: np.ndarray,
                 score = model.score(X_test, y_test)
                 test_hyper_scores[i][j] = score
     else:
-        assert(model_name == "extra trees")
+        assert model_name == "extra trees"
         for i, max_depth in enumerate(max_depth_values):
             for j, n_estimators in enumerate(n_estimators_values):
                 model = ExtraTreesRegressor(
@@ -81,7 +85,7 @@ def hyper_search_2d(X_train: np.ndarray,
         max_depth_values,
         n_estimators_values,
         training_hyper_scores,
-        test_hyper_scores
+        test_hyper_scores,
     )
 
 
@@ -89,7 +93,10 @@ def hyper_search_2d(X_train: np.ndarray,
 # ~3 minutes to 5 minutes to finish
 # ==============================================================================
 def best_hyperparameters(
-    numeric_df: pd.DataFrame, descriptors: list[str], target: str, model_name: str
+    numeric_df: pd.DataFrame,
+    descriptors: list[str],
+    target: str,
+    model_name: str,
 ) -> tuple[int, int]:
     """Determine the best (max_depth, n_estimators).
 
@@ -120,7 +127,13 @@ def best_hyperparameters(
         training_hyper_scores,
         test_hyper_scores,
     ) = hyper_search_2d(
-        X_train, y_train, X_test, y_test, max_depth_bound, n_estimators_bound, model_name
+        X_train,
+        y_train,
+        X_test,
+        y_test,
+        max_depth_bound,
+        n_estimators_bound,
+        model_name,
     )
 
     plt.imshow(training_hyper_scores)
