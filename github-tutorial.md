@@ -14,9 +14,21 @@ The solution is GitHub https://github.com/, and more fundamentally, **git** http
 ## Getting Started
 Download git at https://git-scm.com/downloads. If you use Window, I strongly recommend installing Window Subsystem for Linux (WSL) https://learn.microsoft.com/en-us/windows/wsl/install. You get all the features of Linux plus a smooth experience using git and github.
 
+Open up a terminal and do `git clone https://github.com/TingwenZhang/magnetic-materials-2d.git`, to copy this repository to your local machine.
+
+Then, move to the project directory:
+```
+cd magnetic-materials-2d
+```
+
+You can skip the the `conda` steps in https://github.com/TingwenZhang/magnetic-materials-2d/tree/main#how-to-install-magnetic-materials-2d-locally, if you are not familar with conda virtual environment. We will focus on using `git` first.
+
+Type `code .` in your terminal to open the repository in VSCode, or your favorite text editor.
+
 continues...
 
 ## GitHub Workflow
+@kwagoner94
 
-continues
+continues...
   
