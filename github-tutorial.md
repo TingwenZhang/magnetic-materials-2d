@@ -9,6 +9,9 @@
 1. [Motivation](#motivation)
 2. [Getting Started](#getting-started)
 3. [Forking vs. Cloning](#forking-vs-cloning)
+4. [Branching Strategy](#branching-strategy)
+5. [Keeping Your Branch Up-to-Date](#keeping-your-branch-up-to-date)
+6. [Pushing & Pull Requests](#pushing--pull-requests)
 
 ## Motivation
 Everyone in the Rhone group codes. Most of us started with Professor Rhone's onboarding exercise, which is the content of this repository. One day, let's say we get a very nice score on magnetic moment using RandomForestRegressor. We may want to keep the corresponding set of descriptors, hyperparameters, and even better, the current stage of our notebook/colab. But at the same time, also want to modify the program to achieve a better score. 
@@ -57,6 +60,76 @@ continues...
 
 ---
 
+## Branching Strategy
+
+Use branches to isolate work:
+
+1. **Create a branch** per feature/fix:
+   ```bash
+   git checkout -b feat/new-descriptor
+   ```
+2. **Commit frequently** with clear messages:
+   ```bash
+   git add data_processing.py
+   git commit -m "Add electronegativity descriptor function"
+   ```
+3. **Keep branches small and focused.**
+
+---
+
+## Branching Strategy
+
+Use branches to isolate work:
+
+1. **Create a branch** per feature/fix:
+   ```bash
+   git checkout -b feat/new-descriptor
+   ```
+2. **Commit frequently** with clear messages:
+   ```bash
+   git add data_processing.py
+   git commit -m "Add electronegativity descriptor function"
+   ```
+3. **Keep branches small and focused.**
+
+---
+
+## Keeping Your Branch Up-to-Date
+
+Sync regularly with `main`:
+
+```bash
+git checkout main
+git fetch upstream
+git pull upstream main
+
+git checkout feat/new-descriptor
+# Option A: Rebase
+git rebase main
+# Option B: Merge
+git merge main
+```
+
+- **Rebase**: cleaner, linear history.
+- **Merge**: preserves merge commits.
+
+---
+
+## Pushing & Pull Requests
+
+1. **Push your branch** to your fork:
+   ```bash
+   git push origin feat/new-descriptor
+   ```
+2. On GitHub, click **Compare & pull request**.
+3. Complete the PR template:
+   - **What** does this change do?
+   - **Why** is it needed?
+   - Related issues or blockers?
+4. Assign reviewers (e.g., `@DrRhone`).
+5. Address feedback by pushing additional commits to the same branch.
+
+---
 
 @kwagoner94
 
