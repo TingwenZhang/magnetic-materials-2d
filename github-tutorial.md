@@ -58,8 +58,6 @@ continues...
    git remote add upstream https://github.com/TingwenZhang/magnetic-materials-2d.git
    ```
 
----
-
 ## Branching Strategy
 
 Use branches to isolate work:
@@ -75,8 +73,6 @@ Use branches to isolate work:
    ```
 3. **Keep branches small and focused.**
 
----
-
 ## Branching Strategy
 
 Use branches to isolate work:
@@ -91,8 +87,6 @@ Use branches to isolate work:
    git commit -m "Add electronegativity descriptor function"
    ```
 3. **Keep branches small and focused.**
-
----
 
 ## Keeping Your Branch Up-to-Date
 
@@ -113,8 +107,6 @@ git merge main
 - **Rebase**: cleaner, linear history.
 - **Merge**: preserves merge commits.
 
----
-
 ## Pushing & Pull Requests
 
 1. **Push your branch** to your fork:
@@ -129,7 +121,6 @@ git merge main
 4. Assign reviewers (e.g., `@DrRhone`).
 5. Address feedback by pushing additional commits to the same branch.
 
----
 
 @kwagoner94
 
