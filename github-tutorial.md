@@ -140,4 +140,25 @@ git merge main
 3. Pull the latest `main` locally.
 
 ---
-  
+  ## Best Practices
+
+- Write clear, imperative commit messages.
+- Keep each commit focused on one change.
+- Test locally before pushing.
+- Document major changes in `README.md`.
+- Use meaningful branch names: `feat/…`, `fix/…`, `docs/…`.
+- Review PRs promptly and constructively.
+
+---
+
+## Further Resources
+
+- **Pro Git Book**: [https://git-scm.com/book/en/v2](https://git-scm.com/book/en/v2)
+- **GitHub Learning Lab**: [https://lab.github.com/](https://lab.github.com/)
+- **GitHub Actions Docs**: [https://docs.github.com/en/actions](https://docs.github.com/en/actions)
+
+---
+
+*Happy collaborating!*
+
+- **Scikit-Package**: [https://scikit-package.github.io/scikit-package/index.html](https://scikit-package.github.io/scikit-package/index.html) — Tools and practices for building reusable scientific Python packages (by Columbia University).
