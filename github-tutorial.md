@@ -7,7 +7,7 @@ One option is to make a copy of the code. We will have `ML_2D_exercises.ipynb` a
 
 On the other hand, if we only keep one copy and make a mistake, we might need to press `Ctrl + C` or `Command + C` many times to get back the stage that was working, and there is no guarantee we will.
 
-The solution is GitHub https://github.com/, and more fundamentally, git https://git-scm.com/.
+The solution is GitHub https://github.com/, and more fundamentally, **git** https://git-scm.com/.
 
 continues...
   
