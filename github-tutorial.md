@@ -156,9 +156,9 @@ git merge main
 - **Pro Git Book**: [https://git-scm.com/book/en/v2](https://git-scm.com/book/en/v2)
 - **GitHub Learning Lab**: [https://lab.github.com/](https://lab.github.com/)
 - **GitHub Actions Docs**: [https://docs.github.com/en/actions](https://docs.github.com/en/actions)
-
+- **Scikit-Package**: [https://scikit-package.github.io/scikit-package/index.html](https://scikit-package.github.io/scikit-package/index.html) — Tools and practices for building reusable scientific Python packages (by Columbia University).
+  
 ---
 
 *Happy collaborating!*
 
-- **Scikit-Package**: [https://scikit-package.github.io/scikit-package/index.html](https://scikit-package.github.io/scikit-package/index.html) — Tools and practices for building reusable scientific Python packages (by Columbia University).
