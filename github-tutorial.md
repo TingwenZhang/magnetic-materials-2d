@@ -21,25 +21,112 @@ One option is to make a copy of the code. We will have `ML_2D_exercises.ipynb` a
 
 On the other hand, if we only keep one copy and make a mistake, we might need to press `Ctrl + C` or `Command + C` many times to get back the stage that was working, and there is no guarantee we will.
 
-The solution is GitHub https://github.com/, and more fundamentally, **git** https://git-scm.com/. *git* allows you to save the current stage of a folder. In which you can put `.ipynb`, `.py`, `.txt`, and even `.pptx`. git will track everything in your folder, and let you go back to any previous version. The means we only need one `ML_2D_exercises.ipynb` in our folder, yet we can track its progress. Even better, this version control is done on you local machine. That is, as long as your computer has battery, you can access anything you saved in your git repository.
+The solution is GitHub https://github.com/, and more fundamentally, **git** https://git-scm.com/. **git** allows you to save the current stage of a folder, in which you can put `.ipynb`, `.py`, `.txt`, and even `.pptx`. git will track everything in your folder, and let you go back to any previous version. The means you only need one `ML_2D_exercises.ipynb` in your folder, yet its progress is tracked. Even better, this version control is done on you local machine. That is, as long as your computer has battery, you can access anything you saved in your git repository.
 
 *github* on the other hand is a website for people to share programs. The previous versions of a program can be tracked, just like in git. So, rather than sending your `.ipynb` file through Webex or email, you can put your code on github, and people can get a continuously updated version of your program.
 
 ## Getting Started
 Download git at https://git-scm.com/downloads. If you use Window, I strongly recommend installing Window Subsystem for Linux (WSL) https://learn.microsoft.com/en-us/windows/wsl/install. You get all the features of Linux plus a smooth experience using git and github.
 
-Open up a terminal and do `git clone https://github.com/TingwenZhang/magnetic-materials-2d.git`, to copy this repository to your local machine.
+# Getting Started with the Magnetic Materials 2D Repository
 
-Then, move to the project directory:
+## Clone the Repository
+
+Open a terminal and run:
+
 ```
+git clone https://github.com/TingwenZhang/magnetic-materials-2d.git
 cd magnetic-materials-2d
 ```
 
-You can skip the the `conda` steps in https://github.com/TingwenZhang/magnetic-materials-2d/tree/main#how-to-install-magnetic-materials-2d-locally, if you are not familar with conda virtual environment. We will focus on using `git` first.
+This copies the repository to your local machine and moves you into the project directory.
 
-Type `code .` in your terminal to open the repository in VSCode, or your favorite text editor.
+## Skip Conda for Now
 
-continues...
+You can skip the `conda` setup steps mentioned in the [install guide](https://github.com/TingwenZhang/magnetic-materials-2d/tree/main#how-to-install-magnetic-materials-2d-locally) if you're not familiar with virtual environments. We'll focus on using `git`.
+
+## Open in VSCode
+
+To open the repository in VSCode, type:
+
+```
+code .
+```
+
+Or open it in your preferred text editor.
+
+## Edit the Onboarding Notebook
+
+Navigate to:
+
+```
+src/notebooks/ML_2D_exercises.ipynb
+```
+
+This notebook contains the onboarding exercise.
+
+Make a simple edit—for example, add a line like:
+
+```python
+print("Hello, world!")
+```
+
+Save the file.
+
+## Commit Your Changes
+
+In your terminal (make sure you're still in the `magnetic-materials-2d` folder), run:
+
+```
+git add .
+git commit -m "modified the onboarding exercise"
+```
+
+This stages and commits your change, storing a new version in the git history.
+
+## View Git History
+
+To see previous commits:
+
+```
+git log
+```
+
+You'll see a list of commits with their hashes. To view a previous version, copy the commit hash (e.g., `abc1234`) and run:
+
+```
+git checkout abc1234
+```
+
+This puts your repository in a "detached HEAD" state, showing the contents as they were at that commit. You can now open the notebook and explore the older version **(You should see `print("Hello, world!")` disappears from your notebook)**.
+
+## Return to the Main Branch
+
+To go back to the most recent version on the main branch:
+
+```
+git checkout main
+```
+**(You should see `print("Hello, world!")` re-appears in your notebook)**
+
+## Compare Changes
+
+To compare your latest commit with the one before it:
+
+```
+git diff HEAD^ HEAD
+```
+
+This shows exactly what was changed.
+
+## Continue Practicing
+
+- Try editing the notebook again and repeating the `git add`, `git commit`, and `git log` steps.
+- Use `git status` to check which files have been modified or staged.
+- Explore `git diff` to see changes before committing.
+
+You're now using `git` to track, compare, and explore versions of your onboarding exercise.
+
 
 ## Forking vs. Cloning
 
