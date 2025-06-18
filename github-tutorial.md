@@ -1,5 +1,15 @@
 # GitHub tutorial for the Rhone group https://materials-intelligence.com/
 
+*A step-by-step guide to collaborative GitHub workflows, tailored for researchers new to version control and open-source collaboration.*
+
+---
+
+## Table of Contents
+
+1. [Motivation](#motivation)
+2. [Getting Started](#getting-started)
+3. [Forking vs. Cloning](#forking-vs-cloning)
+
 ## Motivation
 Everyone in the Rhone group codes. Most of us started with Professor Rhone's onboarding exercise, which is the content of this repository. One day, let's say we get a very nice score on magnetic moment using RandomForestRegressor. We may want to keep the corresponding set of descriptors, hyperparameters, and even better, the current stage of our notebook/colab. But at the same time, also want to modify the program to achieve a better score. 
 
@@ -27,7 +37,27 @@ Type `code .` in your terminal to open the repository in VSCode, or your favorit
 
 continues...
 
-## GitHub Workflow
+## Forking vs. Cloning
+
+- **Fork**: Creates your own copy of a repository on GitHub (use when you don’t have write access).
+- **Clone**: Copies a repository (fork or original) to your local machine.
+
+**To fork and clone**:
+
+1. On GitHub, click **Fork** (top-right).
+2. Clone your fork locally:
+   ```bash
+   git clone git@github.com:<your-username>/magnetic-materials-2d.git
+   cd magnetic-materials-2d
+   ```
+3. Add the upstream remote (original repo):
+   ```bash
+   git remote add upstream https://github.com/TingwenZhang/magnetic-materials-2d.git
+   ```
+
+---
+
+
 @kwagoner94
 
 continues...
