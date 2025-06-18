@@ -12,6 +12,7 @@
 4. [Branching Strategy](#branching-strategy)
 5. [Keeping Your Branch Up-to-Date](#keeping-your-branch-up-to-date)
 6. [Pushing & Pull Requests](#pushing--pull-requests)
+7. [Code Review & Merging](#code-review--merging)
 
 ## Motivation
 Everyone in the Rhone group codes. Most of us started with Professor Rhone's onboarding exercise, which is the content of this repository. One day, let's say we get a very nice score on magnetic moment using RandomForestRegressor. We may want to keep the corresponding set of descriptors, hyperparameters, and even better, the current stage of our notebook/colab. But at the same time, also want to modify the program to achieve a better score. 
@@ -121,8 +122,22 @@ git merge main
 4. Assign reviewers (e.g., `@DrRhone`).
 5. Address feedback by pushing additional commits to the same branch.
 
+## Code Review & Merging
 
-@kwagoner94
+- **Reviewers**:
 
-continues...
+  - Check for clarity, functionality, style, and tests.
+  - Use GitHub’s inline comments.
+
+- **Authors**:
+
+  - Update code, respond to comments, and push fixes.
+
+**After approval**:
+
+1. Use **Squash & merge** to consolidate commits (preferred).
+2. Delete the branch.
+3. Pull the latest `main` locally.
+
+---
   
