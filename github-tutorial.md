@@ -7,12 +7,26 @@
 ## Table of Contents
 
 1. [Motivation](#motivation)
-2. [Getting Started](#getting-started)
-3. [Forking vs. Cloning](#forking-vs-cloning)
-4. [Branching Strategy](#branching-strategy)
-5. [Keeping Your Branch Up-to-Date](#keeping-your-branch-up-to-date)
-6. [Pushing & Pull Requests](#pushing--pull-requests)
-7. [Code Review & Merging](#code-review--merging)
+2. [Git](#git)
+
+   * [Clone the Repository](#clone-the-repository)
+   * [Skip Conda for Now](#skip-conda-for-now)
+   * [Open in VSCode](#open-in-vscode)
+   * [Edit the Onboarding Notebook](#edit-the-onboarding-notebook)
+   * [Commit Your Changes](#commit-your-changes)
+   * [View Git History](#view-git-history)
+   * [Return to the Main Branch](#return-to-the-main-branch)
+   * [Compare Changes](#compare-changes)
+   * [Continue Practicing](#continue-practicing)
+3. [GitHub](#github)
+
+   * [Forking vs. Cloning](#forking-vs-cloning)
+   * [Branching Strategy](#branching-strategy)
+   * [Keeping Your Branch Up-to-Date](#keeping-your-branch-up-to-date)
+   * [Pushing & Pull Requests](#pushing--pull-requests)
+   * [Code Review & Merging](#code-review--merging)
+4. [Best Practices](#best-practices)
+5. [Further Resources](#further-resources)
 
 ## Motivation
 Everyone in the Rhone group codes. Most of us started with Professor Rhone's onboarding exercise, which is the content of this repository. One day, let's say we get a very nice score on magnetic moment using RandomForestRegressor. We may want to keep the corresponding set of descriptors, hyperparameters, and even better, the current stage of our notebook/colab. But at the same time, also want to modify the program to achieve a better score. 
@@ -25,12 +39,10 @@ The solution is GitHub https://github.com/, and more fundamentally, **git** http
 
 *github* on the other hand is a website for people to share programs. The previous versions of a program can be tracked, just like in git. So, rather than sending your `.ipynb` file through Webex or email, you can put your code on github, and people can get a continuously updated version of your program.
 
-## Getting Started
+## Git
 Download git at https://git-scm.com/downloads. If you use Window, I strongly recommend installing Window Subsystem for Linux (WSL) https://learn.microsoft.com/en-us/windows/wsl/install. You get all the features of Linux plus a smooth experience using git and github.
 
-# Getting Started with the Magnetic Materials 2D Repository
-
-## Clone the Repository
+### Clone the Repository
 
 Open a terminal and run:
 
@@ -41,11 +53,11 @@ cd magnetic-materials-2d
 
 This copies the repository to your local machine and moves you into the project directory.
 
-## Skip Conda for Now
+### Skip Conda for Now
 
 You can skip the `conda` setup steps mentioned in the [install guide](https://github.com/TingwenZhang/magnetic-materials-2d/tree/main#how-to-install-magnetic-materials-2d-locally) if you're not familiar with virtual environments. We'll focus on using `git`.
 
-## Open in VSCode
+### Open in VSCode
 
 To open the repository in VSCode, type:
 
@@ -55,7 +67,7 @@ code .
 
 Or open it in your preferred text editor.
 
-## Edit the Onboarding Notebook
+### Edit the Onboarding Notebook
 
 Navigate to:
 
@@ -73,7 +85,7 @@ print("Hello, world!")
 
 Save the file.
 
-## Commit Your Changes
+### Commit Your Changes
 
 In your terminal (make sure you're still in the `magnetic-materials-2d` folder), run:
 
@@ -84,7 +96,7 @@ git commit -m "modified the onboarding exercise"
 
 This stages and commits your change, storing a new version in the git history.
 
-## View Git History
+### View Git History
 
 To see previous commits:
 
@@ -100,7 +112,7 @@ git checkout abc1234
 
 This puts your repository in a "detached HEAD" state, showing the contents as they were at that commit. You can now open the notebook and explore the older version **(You should see `print("Hello, world!")` disappears from your notebook)**.
 
-## Return to the Main Branch
+### Return to the Main Branch
 
 To go back to the most recent version on the main branch:
 
@@ -109,7 +121,7 @@ git checkout main
 ```
 **(You should see `print("Hello, world!")` re-appears in your notebook)**
 
-## Compare Changes
+### Compare Changes
 
 To compare your latest commit with the one before it:
 
@@ -119,7 +131,7 @@ git diff HEAD^ HEAD
 
 This shows exactly what was changed.
 
-## Continue Practicing
+### Continue Practicing
 
 - Try editing the notebook again and repeating the `git add`, `git commit`, and `git log` steps.
 - Use `git status` to check which files have been modified or staged.
@@ -127,8 +139,8 @@ This shows exactly what was changed.
 
 You're now using `git` to track, compare, and explore versions of your onboarding exercise.
 
-
-## Forking vs. Cloning
+## GitHub
+### Forking vs. Cloning
 
 - **Fork**: Creates your own copy of a repository on GitHub (use when you don’t have write access).
 - **Clone**: Copies a repository (fork or original) to your local machine.
@@ -146,7 +158,7 @@ You're now using `git` to track, compare, and explore versions of your onboardin
    git remote add upstream https://github.com/TingwenZhang/magnetic-materials-2d.git
    ```
 
-## Branching Strategy
+### Branching Strategy
 
 Use branches to isolate work:
 
@@ -161,7 +173,7 @@ Use branches to isolate work:
    ```
 3. **Keep branches small and focused.**
 
-## Branching Strategy
+### Branching Strategy
 
 Use branches to isolate work:
 
@@ -176,7 +188,7 @@ Use branches to isolate work:
    ```
 3. **Keep branches small and focused.**
 
-## Keeping Your Branch Up-to-Date
+### Keeping Your Branch Up-to-Date
 
 Sync regularly with `main`:
 
@@ -192,10 +204,18 @@ git rebase main
 git merge main
 ```
 
+To clarify:
+
+`upstream` is the name of original repository.
+
+`origin` is the name of the repository you forked.
+
+Always do `git branch` to check which branch you are on before pulling from either `upstream` or `origin`.
+
 - **Rebase**: cleaner, linear history.
 - **Merge**: preserves merge commits.
 
-## Pushing & Pull Requests
+### Pushing & Pull Requests
 
 1. **Push your branch** to your fork:
    ```bash
@@ -209,7 +229,7 @@ git merge main
 4. Assign reviewers (e.g., `@DrRhone`).
 5. Address feedback by pushing additional commits to the same branch.
 
-## Code Review & Merging
+### Code Review & Merging
 
 - **Reviewers**:
 
