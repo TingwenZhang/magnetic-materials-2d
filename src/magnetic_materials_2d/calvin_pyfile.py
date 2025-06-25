@@ -1,5 +1,3 @@
 def multiple(a, b):
-    """
-    multiply 2 numbers
-    """
-    return a*b
+    """Multiply 2 numbers."""
+    return a * b
