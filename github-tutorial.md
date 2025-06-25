@@ -85,9 +85,23 @@ print("Hello, world!")
 
 Save the file.
 
+### Sanity check
+Type
+`git status`
+If you saved your changes, you should see
+```
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+        modified:   src/notebooks/ML_2D_working.ipynb
+
+no changes added to commit (use "git add" and/or "git commit -a")
+```
+The key line above is `modified:   src/notebooks/ML_2D_working.ipynb`. This is the result of adding `print("Hello, world!")` to your notebook.
+
 ### Commit Your Changes
 
-In your terminal (make sure you're still in the `magnetic-materials-2d` folder), run:
+In your terminal run:
 
 ```
 git add .
@@ -101,13 +115,22 @@ This stages and commits your change, storing a new version in the git history.
 To see previous commits:
 
 ```
-git log
+git log --oneline
 ```
 
-You'll see a list of commits with their hashes. To view a previous version, copy the commit hash (e.g., `abc1234`) and run:
-
+You'll see a list of commits with their hashes. For example,
 ```
-git checkout abc1234
+(base) zhangt20@DESKTOP-MCF6IEP:~/magnetic-materials-2d$ git log --oneline
+c4d06b4 (HEAD -> demo-branch) modified the onboarding exercise
+0927b43 (origin/main, origin/HEAD, main) fixed notebook
+9100335 fixed pre-commit
+...
+```
+The 7-character string before every line is a `<commit-hash>`. Your `<commit-hash>` will be different.
+
+To view a previous version, copy its `<commit-hash>` and run:
+```
+git checkout <commit-hash>
 ```
 
 This puts your repository in a "detached HEAD" state, showing the contents as they were at that commit. You can now open the notebook and explore the older version **(You should see `print("Hello, world!")` disappears from your notebook)**.
