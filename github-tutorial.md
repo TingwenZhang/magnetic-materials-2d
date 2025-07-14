@@ -1,6 +1,6 @@
 # GitHub tutorial for the Rhone group https://materials-intelligence.com/
 
-*A step-by-step guide to collaborative GitHub workflows, tailored for researchers new to version control and open-source collaboration.*
+_A step-by-step guide to collaborative GitHub workflows, tailored for researchers new to version control and open-source collaboration._
 
 ---
 
@@ -9,27 +9,30 @@
 1. [Motivation](#motivation)
 2. [Git](#git)
 
-   * [Clone the Repository](#clone-the-repository)
-   * [Skip Conda for Now](#skip-conda-for-now)
-   * [Open in VSCode](#open-in-vscode)
-   * [Edit the Onboarding Notebook](#edit-the-onboarding-notebook)
-   * [Commit Your Changes](#commit-your-changes)
-   * [View Git History](#view-git-history)
-   * [Return to the Main Branch](#return-to-the-main-branch)
-   * [Compare Changes](#compare-changes)
-   * [Continue Practicing](#continue-practicing)
+   - [Clone the Repository](#clone-the-repository)
+   - [Skip Conda for Now](#skip-conda-for-now)
+   - [Open in VSCode](#open-in-vscode)
+   - [Edit the Onboarding Notebook](#edit-the-onboarding-notebook)
+   - [Commit Your Changes](#commit-your-changes)
+   - [View Git History](#view-git-history)
+   - [Return to the Main Branch](#return-to-the-main-branch)
+   - [Compare Changes](#compare-changes)
+   - [Continue Practicing](#continue-practicing)
+
 3. [GitHub](#github)
 
-   * [Forking vs. Cloning](#forking-vs-cloning)
-   * [Branching Strategy](#branching-strategy)
-   * [Keeping Your Branch Up-to-Date](#keeping-your-branch-up-to-date)
-   * [Pushing & Pull Requests](#pushing--pull-requests)
-   * [Code Review & Merging](#code-review--merging)
+   - [Forking vs. Cloning](#forking-vs-cloning)
+   - [Branching Strategy](#branching-strategy)
+   - [Keeping Your Branch Up-to-Date](#keeping-your-branch-up-to-date)
+   - [Pushing & Pull Requests](#pushing--pull-requests)
+   - [Code Review & Merging](#code-review--merging)
+
 4. [Best Practices](#best-practices)
 5. [Further Resources](#further-resources)
 
 ## Motivation
-Everyone in the Rhone group codes. Most of us started with Professor Rhone's onboarding exercise, which is the content of this repository. One day, let's say we get a very nice score on magnetic moment using RandomForestRegressor. We may want to keep the corresponding set of descriptors, hyperparameters, and even better, the current stage of our notebook/colab. But at the same time, also want to modify the program to achieve a better score. 
+
+Everyone in the Rhone group codes. Most of us started with Professor Rhone's onboarding exercise, which is the content of this repository. One day, let's say we get a very nice score on magnetic moment using RandomForestRegressor. We may want to keep the corresponding set of descriptors, hyperparameters, and even better, the current stage of our notebook/colab. But at the same time, also want to modify the program to achieve a better score.
 
 One option is to make a copy of the code. We will have `ML_2D_exercises.ipynb` and `ML_2D_exercises(1).ipynb` in our folder. If another change is made, we will have `ML_2D_exercises(2).ipynb`, `ML_2D_exercises(3).ipynb`, and so on. As you can see, this approach will become overwhelming due to the ever-increasing number of files in our folder. Also, a week later, one may have trouble remembering which file, `ML_2D_exercises(2).ipynb` or `ML_2D_exercises(3).ipynb` contains the better result.
 
@@ -37,9 +40,10 @@ On the other hand, if we only keep one copy and make a mistake, we might need to
 
 The solution is GitHub https://github.com/, and more fundamentally, **git** https://git-scm.com/. **git** allows you to save the current stage of a folder, in which you can put `.ipynb`, `.py`, `.txt`, and even `.pptx`. git will track everything in your folder, and let you go back to any previous version. The means you only need one `ML_2D_exercises.ipynb` in your folder, yet its progress is tracked. Even better, this version control is done on you local machine. That is, as long as your computer has battery, you can access anything you saved in your git repository.
 
-*github* on the other hand is a website for people to share programs. The previous versions of a program can be tracked, just like in git. So, rather than sending your `.ipynb` file through Webex or email, you can put your code on github, and people can get a continuously updated version of your program.
+_github_ on the other hand is a website for people to share programs. The previous versions of a program can be tracked, just like in git. So, rather than sending your `.ipynb` file through Webex or email, you can put your code on github, and people can get a continuously updated version of your program.
 
 ## Git
+
 Download git at https://git-scm.com/downloads. If you use Window, I strongly recommend installing Window Subsystem for Linux (WSL) https://learn.microsoft.com/en-us/windows/wsl/install. You get all the features of Linux plus a smooth experience using git and github.
 
 ### Clone the Repository
@@ -86,9 +90,11 @@ print("Hello, world!")
 Save the file.
 
 ### Sanity check
+
 Type
 `git status`
 If you saved your changes, you should see
+
 ```
 Changes not staged for commit:
   (use "git add <file>..." to update what will be committed)
@@ -97,6 +103,7 @@ Changes not staged for commit:
 
 no changes added to commit (use "git add" and/or "git commit -a")
 ```
+
 The key line above is `modified:   src/notebooks/ML_2D_working.ipynb`. This is the result of adding `print("Hello, world!")` to your notebook.
 
 ### Commit Your Changes
@@ -119,6 +126,7 @@ git log --oneline
 ```
 
 You'll see a list of commits with their hashes. For example,
+
 ```
 (base) zhangt20@DESKTOP-MCF6IEP:~/magnetic-materials-2d$ git log --oneline
 c4d06b4 (HEAD -> demo-branch) modified the onboarding exercise
@@ -126,9 +134,11 @@ c4d06b4 (HEAD -> demo-branch) modified the onboarding exercise
 9100335 fixed pre-commit
 ...
 ```
+
 The 7-character string before every line is a `<commit-hash>`. Your `<commit-hash>` will be different.
 
 To view a previous version, copy its `<commit-hash>` and run:
+
 ```
 git checkout <commit-hash>
 ```
@@ -142,6 +152,7 @@ To go back to the most recent version on the main branch:
 ```
 git checkout main
 ```
+
 **(You should see `print("Hello, world!")` re-appears in your notebook)**
 
 ### Compare Changes
@@ -163,6 +174,7 @@ This shows exactly what was changed.
 You're now using `git` to track, compare, and explore versions of your onboarding exercise.
 
 ## GitHub
+
 ### Forking vs. Cloning
 
 - **Fork**: Creates your own copy of a repository on GitHub (use when you don’t have write access).
@@ -270,7 +282,8 @@ Always do `git branch` to check which branch you are on before pulling from eith
 3. Pull the latest `main` locally.
 
 ---
-  ## Best Practices
+
+## Best Practices
 
 - Write clear, imperative commit messages.
 - Keep each commit focused on one change.
@@ -287,8 +300,7 @@ Always do `git branch` to check which branch you are on before pulling from eith
 - **GitHub Learning Lab**: [https://lab.github.com/](https://lab.github.com/)
 - **GitHub Actions Docs**: [https://docs.github.com/en/actions](https://docs.github.com/en/actions)
 - **Scikit-Package**: [https://scikit-package.github.io/scikit-package/index.html](https://scikit-package.github.io/scikit-package/index.html) — Tools and practices for building reusable scientific Python packages (by Columbia University).
-  
+
 ---
 
-*Happy collaborating!*
-
+_Happy collaborating!_
